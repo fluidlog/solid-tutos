@@ -1,4 +1,5 @@
-import TeamList from './teamList'
+import FetchUri from './fetchUri'
+import UriForm from './uriForm'
 import './App.css';
 
 function App() {
@@ -8,10 +9,24 @@ function App() {
         <p>
           Bienvenu dans le tutoriel SOLID
         </p>
-        Retrouvez plus d'informations dans le <a className="App-link" href="https://pad.lescommuns.org/4CH-testsSolid">PAD</a>
       </header>
+      <div className="App-form">
+        <p>
+          Retrouvez la documentation de ce projet dans le PAD : <a className="App-link" href="https://pad.lescommuns.org/Solid-Tutos"> PAD des Solid Tutos </a>
+        </p>
+      </div>
+      <div className="App-form">
+        <p>
+          <span>
+            Merci d'entrer l'URI que vous souhaitez interroger ici :
+          </span>
+          <span>
+            <UriForm defaultUri="https://pod.inrupt.com/fluidlog/public/test-semapps/users"/>
+          </span>
+        </p>
+      </div>
       <div className="App-list">
-        <TeamList />
+        <FetchUri />
       </div>
     </div>
   );

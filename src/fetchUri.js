@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export default function TeamList(){
+export default function FetchList(){
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -14,7 +14,7 @@ export default function TeamList(){
         }
         // SemApps : https://data.virtual-assembly.org/users
         // SOLID : https://pod.inrupt.com/fluidlog/public/test-semapps/users
-        const response = await fetch('https://pod.inrupt.com/fluidlog/public/test-semapps/users', method)
+        const response = await fetch("https://pod.inrupt.com/fluidlog/public/test-semapps/users", method)
         const responseData = await response.json()
         console.log("responseData",responseData)
         let responseLdp = {};
@@ -49,6 +49,6 @@ export default function TeamList(){
     if (loading)
       return "chargement..."
     return <ul>
-      {users.map(t => <li>{t.split("/").pop()}</li>)}
+      {users.map( (t, index) => <li key={index}>{t.split("/").pop()}</li>)}
     </ul>
   }
