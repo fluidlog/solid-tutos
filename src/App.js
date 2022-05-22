@@ -1,33 +1,44 @@
+import React, { useState } from 'react';
 import FetchUri from './fetchUri'
 import UriForm from './uriForm'
-import './App.css';
 
 function App() {
+  const [uri, setUri] = useState("https://pod.inrupt.com/fluidlog/public/Carto4CH/users/");
+  const [readyToFetch, setReadyToFetch] = useState(false);
+
+  const saveUri = (uri) => {
+		setUri(uri);
+	};
+
+  const goFetch = () => {
+		setReadyToFetch(true);
+	};
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Bienvenu dans le tutoriel SOLID
-        </p>
-      </header>
-      <div className="App-form">
-        <p>
-          Retrouvez la documentation de ce projet dans le PAD : <a className="App-link" href="https://pad.lescommuns.org/Solid-Tutos"> PAD des Solid Tutos </a>
-        </p>
-      </div>
-      <div className="App-form">
-        <p>
-          <span>
-            Merci d'entrer l'URI que vous souhaitez interroger ici :
-          </span>
-          <span>
-            <UriForm defaultUri="https://pod.inrupt.com/fluidlog/public/test-semapps/users"/>
-          </span>
-        </p>
-      </div>
-      <div className="App-list">
-        <FetchUri />
-      </div>
+    <div className='container'>
+			<h1>Bienvenu dans le tutoriel SOLID</h1>
+      <div className='flex-row'>
+				<div className='flex-large'>
+						<div>
+							<h2>Documentation</h2>
+              Retrouvez la documentation de ce projet dans le PAD : <a className="App-link" href="https://pad.lescommuns.org/Solid-Tutos"> PAD des Solid Tutos </a>
+						</div>
+						<div>
+							<h2>URi du container</h2>
+							<UriForm defaultUri={uri} saveUri={saveUri} goFetch={goFetch} />
+						</div>
+				</div>
+        <div className='flex-large'>
+          { readyToFetch ? (
+            <div>
+  						<h2>Contenu LDP</h2>
+              <FetchUri uri={uri} />
+            </div>
+          ) : (
+            <h2>Aucune ressource</h2>
+          )}
+          </div>
+        </div>
     </div>
   );
 }

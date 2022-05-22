@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-export default function FetchList(){
+export default function FetchUri(props){
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+
+//  console.log("props=",props);
 
   useEffect( () => {
       (async function () {
@@ -14,30 +17,38 @@ export default function FetchList(){
         }
         // SemApps : https://data.virtual-assembly.org/users
         // SOLID : https://pod.inrupt.com/fluidlog/public/test-semapps/users
-        const response = await fetch("https://pod.inrupt.com/fluidlog/public/test-semapps/users", method)
+        const response = await fetch(props.uri, method)
         const responseData = await response.json()
-        console.log("responseData",responseData)
-        let responseLdp = {};
+        let responseLdp;
+        let responseGraph;
         let responseContains;
         let responseContainsList = []
         if (response.ok){
-          responseLdp = responseData["@graph"][0];
-          console.log("responseLdp",responseLdp)
-
-          responseContains = responseLdp["contains"]
-          if (Array.isArray(responseContains))
+          responseGraph = responseData["@graph"];
+          console.log("responseGraph",responseGraph)
+          if (responseGraph)
           {
-            responseContains.forEach(item => {
-                responseContainsList.push(item)
-            });
-            console.log("responseContainsList",responseContainsList)
-            setUsers(responseContainsList);
+            responseLdp = responseGraph[0];
+            responseContains = responseLdp["contains"]
+            if (Array.isArray(responseContains))
+            {
+              responseContains.forEach(item => {
+                  responseContainsList.push(item)
+              });
+              console.log("responseContainsList",responseContainsList)
+              setUsers(responseContainsList);
+            }
+            else // string
+            {
+              responseContainsList.push(responseContains)
+              console.log("responseContainsList",responseContainsList)
+              setUsers(responseContainsList);
+            }
           }
-          else // string
-          {
-            responseContainsList.push(responseContains)
-            console.log("responseContainsList",responseContainsList)
-            setUsers(responseContainsList);
+          else {
+            setLoading(false)
+            setError(true)
+            console.log("Erreur - URI incorrecte... ")
           }
         }
         else {
@@ -46,8 +57,13 @@ export default function FetchList(){
         setLoading(false)
      })()
     }, []);
+
     if (loading)
       return "chargement..."
+
+    if (error)
+      return "Erreur lors de l'interrogation de l'URi..."
+
     return <ul>
       {users.map( (t, index) => <li key={index}>{t.split("/").pop()}</li>)}
     </ul>
