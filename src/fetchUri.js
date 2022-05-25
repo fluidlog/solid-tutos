@@ -5,10 +5,11 @@ export default function FetchUri(props){
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
-//  console.log("props=",props);
+//  console.log("FetchUri/props=",props);
 
   useEffect( () => {
       (async function () {
+
         const method = {
           method: 'GET',
           headers: {
@@ -52,11 +53,11 @@ export default function FetchUri(props){
           }
         }
         else {
-          console.log("error", JSON.Stringify(responseLdp))
+          console.log("error - URI incorrecte... ")
         }
         setLoading(false)
      })()
-    }, []);
+    }, [props.goFetch]);
 
     if (loading)
       return "chargement..."

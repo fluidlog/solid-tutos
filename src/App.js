@@ -32,7 +32,7 @@ function App() {
           { readyToFetch ? (
             <div>
   						<h2>Contenu LDP</h2>
-              <FetchUri uri={uri} />
+              <FetchUri uri={uri} goFetch={goFetch} />
             </div>
           ) : (
             <h2>Aucune ressource</h2>
