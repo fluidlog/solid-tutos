@@ -26,7 +26,7 @@ export default function FetchUri(props){
         let responseContainsList = []
         if (response.ok){
           responseGraph = responseData["@graph"];
-          console.log("responseGraph",responseGraph)
+//          console.log("responseGraph",responseGraph)
           if (responseGraph)
           {
             responseLdp = responseGraph[0];
@@ -36,13 +36,11 @@ export default function FetchUri(props){
               responseContains.forEach(item => {
                   responseContainsList.push(item)
               });
-              console.log("responseContainsList",responseContainsList)
               setUsers(responseContainsList);
             }
             else // string
             {
               responseContainsList.push(responseContains)
-              console.log("responseContainsList",responseContainsList)
               setUsers(responseContainsList);
             }
           }
