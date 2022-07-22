@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
-export default function FetchUri(props){
+export default function FetchUriUser(props){
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
-//  console.log("FetchUri/props=",props);
+//  console.log("props=",props);
 
   useEffect( () => {
       (async function () {
-
         const method = {
           method: 'GET',
           headers: {
@@ -18,7 +17,7 @@ export default function FetchUri(props){
         }
         // SemApps : https://data.virtual-assembly.org/users
         // SOLID : https://pod.inrupt.com/fluidlog/public/test-semapps/users
-        const response = await fetch(props.uri, method)
+        const response = await fetch(props.uriUser, method)
         const responseData = await response.json()
         let responseLdp;
         let responseGraph;
@@ -26,7 +25,7 @@ export default function FetchUri(props){
         let responseContainsList = []
         if (response.ok){
           responseGraph = responseData["@graph"];
-//          console.log("responseGraph",responseGraph)
+          console.log("responseGraph",responseGraph)
           if (responseGraph)
           {
             responseLdp = responseGraph[0];
@@ -36,11 +35,13 @@ export default function FetchUri(props){
               responseContains.forEach(item => {
                   responseContainsList.push(item)
               });
+              console.log("responseContainsList",responseContainsList)
               setUsers(responseContainsList);
             }
             else // string
             {
               responseContainsList.push(responseContains)
+              console.log("responseContainsList",responseContainsList)
               setUsers(responseContainsList);
             }
           }
@@ -51,11 +52,11 @@ export default function FetchUri(props){
           }
         }
         else {
-          console.log("error - URI incorrecte... ")
+          console.log("error", JSON.Stringify(responseLdp))
         }
         setLoading(false)
      })()
-    }, [props.goFetch]);
+   }, [props.uriUser]);
 
     if (loading)
       return "chargement..."
