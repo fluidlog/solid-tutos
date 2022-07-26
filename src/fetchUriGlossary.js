@@ -47,15 +47,19 @@ export default function FetchUriGlossary(props){
     if (error)
       return "Erreur lors de l'interrogation de l'URi..."
 
-    return <ul>
+    return <table><thead><tr>
+    <th>Terme</th>
+    <th>Signification</th>
+    <th>Définition</th>
+    <th>Modification</th>
+    </tr>
+    </thead>
       {terms.map( (t, index) =>
-        <li key={index}>
-          <b>{t.prefLabel}</b>
-          <ul>
-            <li><b>Signification : </b>{t.altLabel}</li>
-            <li><b>Définition : </b>{t.definition}</li>
-          </ul>
-        </li>
+        <tr key={index}>
+          <td>{t.prefLabel}</td>
+          <td>{t.altLabel}</td>
+          <td>{t.definition}</td>
+        </tr>
       )}
-    </ul>
+    </table>
 }
