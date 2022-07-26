@@ -12,7 +12,7 @@ function App() {
   `;
 
   const [uriUser, setUriUser] = useState("https://pod.inrupt.com/fluidlog/public/Carto4CH/users/");
-  const [uriGlossary, setUriGlossary] = useState("https://fluidlog.solidcommunity.net/public/glossary/terms.ttl");
+  const [uriGlossary, setUriGlossary] = useState("https://fluidlog.solidcommunity.net/public/glossary/");
   const [readyToFetchUser, setReadyToFetchUser] = useState(false);
   const [readyToFetchGlossary, setReadyToFetchGlossary] = useState(false);
   const listUriUser =  [
