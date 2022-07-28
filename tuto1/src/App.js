@@ -8,7 +8,7 @@ function App() {
         <p>
           Bienvenu dans le tutoriel SOLID
         </p>
-        Retrouvez plus d'informations dans le <a className="App-link" href="https://pad.lescommuns.org/4CH-testsSolid">PAD</a>
+        Retrouvez plus d'informations dans le <a className="App-link" href="https://pad.lescommuns.org/Solid-Tutos">PAD</a>
       </header>
       <div className="App-list">
         <TeamList />
