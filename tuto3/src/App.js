@@ -20,6 +20,12 @@ function App() {
     margin : 0px;
   `;
 
+  const Palert = styled.p`
+    font-weight: bold;
+    font-size: 2em;
+    color: palevioletred;
+  `;
+
   const [uriGlossary, setUriGlossary] = useState("https://fluidlog.solidcommunity.net/public/glossary/terms.ttl");
   const [readyToFetchGlossary, setReadyToFetchGlossary] = useState(false);
   const [readyToDisplayEditForm, setReadyToDisplayEditForm] = useState(false);
@@ -61,7 +67,7 @@ function App() {
 
   return (
     <div className='container'>
-			<h1>Bienvenu dans le tutoriel SOLID</h1>
+			<h1>Bienvenu dans le tutoriel SOLID N°3</h1>
 
       <div className="app-container">
         {session.info.isLoggedIn ? (
@@ -97,7 +103,7 @@ function App() {
               Retrouvez la documentation de ce projet dans le PAD : <a className="App-link" href="https://pad.lescommuns.org/Solid-Tutos"> PAD des Solid Tutos </a>
 						</div>
             <div>
-							<h2>Tuto 3 - Glossaire</h2>
+							<h2>Choix du lexique</h2>
               <P1>Vous avez la possibilité d'entrer une URi manuellement</P1>
 							<UriFormGlossary
                 session={session}
@@ -121,7 +127,8 @@ function App() {
             { // Affichage de la liste du lexique
             readyToFetchGlossary ? (
             <div>
-  						<h2>Liste du lexique</h2>
+  						<h2>Liste des termes</h2>
+              <div><Palert id="message"></Palert></div>
               <FetchUriGlossary
                 session={session}
                 uriGlossary={uriGlossary}
@@ -136,8 +143,9 @@ function App() {
               />
             </div>
           ) : (
-            <h2>Aucun lexique sélectionné</h2>
+            <div></div>
           )}
+
         </div>
       </div>
     </div>

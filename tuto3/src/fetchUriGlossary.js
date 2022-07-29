@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { getSolidDataset, getThingAll, getStringWithLocale, getUrl } from "@inrupt/solid-client";
+import { getSolidDataset, getThingAll, getStringWithLocale, getUrl, getThing, setStringWithLocale, setThing, saveSolidDatasetAt } from "@inrupt/solid-client";
 import { SKOS, RDF } from "@inrupt/vocab-common-rdf";
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import { useForm } from "react-hook-form";
+import styled from 'styled-components'
 
 export default function FetchUriGlossary(props){
   console.log("FetchUriGlossary/props=",props);
+  // CSS adaptation
+  const P1 = styled.p`
+    margin : 0px;
+  `;
+
   const [terms, setTerms] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -14,10 +20,20 @@ export default function FetchUriGlossary(props){
     defaultValues : { selectedUri : "", selectedTerm : "", selectedSignification : "" }
   });
 
+  const { register: registerEdit } = useForm({
+    defaultValues : { signification : props.signification }
+  });
+
   const onSubmit = () => {
+    if (!props.session.info.isLoggedIn)
+    {
+      document.getElementById("message").textContent = "Please log before...";
+      return
+    }
     props.goSetReadyToDisplaySelectedTerm();
     props.goSetUriSelectedTerm(watch("selectedUri"));
     props.goSetSignification(watch("selectedSignification"));
+    console.log("selectedSignification=",watch("selectedSignification"))
     document.getElementById("selectedUri").textContent = "("+watch("selectedUri")+")";
     document.getElementById("selectedTerm").textContent = watch("selectedTerm");
     document.getElementById("significationInput").value = watch("selectedSignification");
@@ -25,8 +41,8 @@ export default function FetchUriGlossary(props){
 
   useEffect( () => {
       (async function () {
-        console.log("affichage du tableau : login =",props.session)
-        if (!props.session || !props.session.info.isLoggedIn) return;
+        // console.log("affichage du tableau : login =",props.session)
+        // if (!props.session || !props.session.info.isLoggedIn) return;
         // props.uriGlossary = https://fluidlog.solidcommunity.net/public/glossary/
         // Get Dataset glossary
         let myProfileDataset = await getSolidDataset(props.uriGlossary, {
@@ -60,16 +76,56 @@ export default function FetchUriGlossary(props){
      })()
    }, [props.signification]);
 
-    if (loading)
-    {
-      if (props.session.info.isLoggedIn)
-        return "chargement..."
-      else {
-        return "Please log before..."
-      }
-    }
+   async function modifySignificationInPod() {
+     console.log("Modification de la signification : props.signification =",props.signification)
+
+     props.goSetSignification(document.getElementById("significationInput").value);
+     let myProfileDataset = await getSolidDataset(props.uriGlossary, {
+         fetch: props.session.fetch
+     });
+     let profile = await getThing(myProfileDataset, props.uriSelectedTerm);
+     profile = setStringWithLocale(profile, SKOS.altLabel, props.signification, "fr");
+     myProfileDataset = setThing(myProfileDataset, profile);
+     // Write back the dataset to your Pod.
+     await saveSolidDatasetAt(props.uriGlossary, myProfileDataset, {
+       fetch: props.session.fetch
+     });
+
+     // refresh signification in table
+     document.getElementById("s["+props.uriSelectedTerm+"]").textContent = props.signification;
+   }
+
+   useEffect( () => {
+     if (props.signification)
+       modifySignificationInPod()
+   }, [props.signification])
+
+   const onSubmitEdit = () => {
+     modifySignificationInPod();
+ 	 };
+
+   if (loading)
+    return "chargement..."
 
     return (
+      <>
+      { // Affichage conditionnel de la modification d'un terme
+        props.readyToFetchGlossary && !props.readyToDisplaySelectedTerm ? (
+          <P1>Pour modifier la signification d'un terme, <br/>cliquez sur le bouton "Edition" a droite du terme dans le tableau</P1>
+        ):(<P1></P1>)
+      }
+      {
+        props.readyToFetchGlossary && props.readyToDisplaySelectedTerm ? (
+          <P1><b>Terme sélectionné : </b></P1>
+        ):(<P1></P1>)
+      }
+
+      <form onSubmit={handleSubmit(onSubmitEdit)}>
+        <div id="selectedTerm"></div>
+        <div id="selectedUri"></div>
+        <input type='text' id='significationInput' { ...registerEdit("signification") } size="50"/>
+        <input type="submit" value="Mettre la signification à jour dans le POD"></input>
+      </form>
       <form onSubmit={handleSubmit(onSubmit)}>
         <table>
           <thead>
@@ -97,5 +153,6 @@ export default function FetchUriGlossary(props){
           )}
         </table>
       </form>
+      </>
     )
 }
