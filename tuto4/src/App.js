@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ListTerm from './ListTerm'
 import AddTerm from './AddTerm'
-import ChooseUriGlossary from './ChooseUriGlossary'
+import ChooseGlossary from './ChooseGlossary'
 import styled from 'styled-components'
 import {
   LoginButton,
@@ -107,7 +107,7 @@ function App() {
             <div>
 							<h2>Choix du lexique</h2>
               <P1>Vous avez la possibilité d'entrer une URi manuellement</P1>
-							<ChooseUriGlossary
+							<ChooseGlossary
                 session={session}
                 uriGlossary={uriGlossary}
                 saveUriGlossary={saveUriGlossary}
@@ -128,6 +128,8 @@ function App() {
               <AddTerm
                 session={session}
                 uriGlossary={uriGlossary}
+                termList={termList}
+                goSetTermList={goSetTermList}
               />
               <div><Palert id="message"></Palert></div>
               <ListTerm
@@ -154,4 +156,3 @@ function App() {
 }
 
 export default App;
-
