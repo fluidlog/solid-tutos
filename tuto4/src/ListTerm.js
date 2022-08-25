@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { getSolidDataset, getThingAll, getDatetime, getUrl, getStringWithLocale, addStringNoLocale, createThing, saveSolidDatasetAt } from "@inrupt/solid-client";
+import { getSolidDataset, getThingAll, getDatetime, getUrl } from "@inrupt/solid-client";
 import {
   Table,
   TableColumn
 } from "@inrupt/solid-ui-react";
 
-const TEXT_PREDICATE = "http://schema.org/text";
 const CREATED_PREDICATE = "http://www.w3.org/2002/12/cal/ical#created";
 const TYPE_PREDICATE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
 const THESAURUS_NAME = "http://www.w3.org/2004/02/skos/core#Concept"

@@ -38,10 +38,9 @@ function App() {
     { value:"glossary3",uri:"https://fluidlog.solidcommunity.net/public/glossary/terms3.ttl"}
   ]
 
-  const [newTerm, setNewTerm] = useState();
   const [termList, setTermList] = useState();
 
-  const saveUriGlossary = (uriGlossary) => {
+  const goSetUriGlossary = (uriGlossary) => {
 		setUriGlossary(uriGlossary);
 	};
 
@@ -59,10 +58,6 @@ function App() {
 
   const goSetTermList = (l) => {
 		setTermList(l);
-	};
-
-  const goSetNewTerm = (t) => {
-		setNewTerm(t);
 	};
 
   const { session } = useSession();
@@ -110,7 +105,7 @@ function App() {
 							<ChooseGlossary
                 session={session}
                 uriGlossary={uriGlossary}
-                saveUriGlossary={saveUriGlossary}
+                goSetUriGlossary={goSetUriGlossary}
                 goSetReadyToFetchGlossary={goSetReadyToFetchGlossary}
                 readyToFetchGlossary={readyToFetchGlossary}
                 options={listUriGlossary}
@@ -139,8 +134,6 @@ function App() {
                 readyToFetchGlossary={readyToFetchGlossary}
                 goSetReadyToDisplaySelectedTerm={goSetReadyToDisplaySelectedTerm}
                 readyToDisplaySelectedTerm={readyToDisplaySelectedTerm}
-                newTerm={newTerm}
-                goSetNewTerm={goSetNewTerm}
                 termList={termList}
                 goSetTermList={goSetTermList}
               />

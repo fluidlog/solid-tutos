@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import IconButton from '@mui/material/IconButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import styled from 'styled-components'
-import { SKOS } from "@inrupt/vocab-common-rdf";
 
 export default function ChooseGlossary(props) {
   console.log("chooseGlossary/props=",props);
@@ -17,12 +16,12 @@ export default function ChooseGlossary(props) {
     line-height: 2;
   `;
 
-  const { register, handleSubmit, watch, formState: { errors }, setValue } = useForm({
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm({
     defaultValues : { uriInputGlossary : props.uriGlossary }
   });
 
-  const onSubmit = () => {
-    props.saveUriGlossary(watch("uriInputGlossary")); // feel input with value
+  const onSubmit = (data) => {
+    props.goSetUriGlossary(data.uriInputGlossary);
     props.goSetReadyToFetchGlossary();
     props.goSetReadyToDisplayEditForm();
   };
