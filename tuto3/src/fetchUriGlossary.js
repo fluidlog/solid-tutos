@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getSolidDataset, getThingAll, getStringWithLocale, getUrl, getThing, setStringWithLocale, setThing, saveSolidDatasetAt } from "@inrupt/solid-client";
+import { getSolidDataset, getThingAll, getStringNoLocale, getUrl, getThing, setStringWithLocale, setThing, saveSolidDatasetAt } from "@inrupt/solid-client";
 import { SKOS, RDF } from "@inrupt/vocab-common-rdf";
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
@@ -59,9 +59,9 @@ export default function FetchUriGlossary(props){
           if (myThingType === "Concept")
           {
             myThingUri = item.url;
-            myThingPrefLabel = getStringWithLocale(item, SKOS.prefLabel, "fr");
-            myThingAltLabel = getStringWithLocale(item, SKOS.altLabel, "fr");
-            myThingDefinition = getStringWithLocale(item, SKOS.definition, "fr");
+            myThingPrefLabel = getStringNoLocale(item, SKOS.prefLabel);
+            myThingAltLabel = getStringNoLocale(item, SKOS.altLabel);
+            myThingDefinition = getStringNoLocale(item, SKOS.definition);
             myThingList.push({
               "uri" : myThingUri,
               "prefLabel" : myThingPrefLabel,
@@ -71,6 +71,7 @@ export default function FetchUriGlossary(props){
           }
         });
 
+        console.log("affichage du tableau : myThingList =",myThingList)
         setTerms(myThingList);
         setLoading(false)
      })()
